@@ -1,3 +1,42 @@
+> **Archived academic project — UMass Lowell, Spring 2018.**
+> Kept for the record, not maintained. Written during my MS in Computer Science;
+> it reflects what I was learning then, not how I write code today.
+> Current work: [k8s-slo-lab](https://github.com/navaneeth-c/k8s-slo-lab)
+
+# Secure file transfer — AES-128 over Diffie-Hellman
+
+Course project for **Cryptography and Network Security**, UMass Lowell, Spring 2018.
+A Java client/server that establishes an SSL socket, negotiates a shared secret via
+Diffie-Hellman, then encrypts a file with AES-128 under that key for transfer.
+Full write-up: [CNS_Project_Report.pdf](CNS_Project_Report.pdf).
+
+## Note on the keystores
+
+The original `keystoreFile.jks` files — self-signed certificates generated for this
+assignment — **have been removed from this repository.** Committing key material,
+even throwaway class certificates, is not a habit worth preserving in public. They
+remain in the git history of the pre-archive commits.
+
+To run this, generate your own:
+
+```bash
+keytool -genkeypair -alias sslkey -keyalg RSA -keysize 2048 -validity 365 \
+        -keystore keystoreFile.jks -storepass <your-password>
+```
+
+Place the result next to each JAR (or in each Eclipse project root) as
+`keystoreFile.jks`, and update the store password in the source to match.
+
+## In hindsight
+
+Layering a hand-rolled Diffie-Hellman exchange and AES on top of a connection that
+is *already* TLS-protected is redundant — SSL has done the key agreement and
+encryption before the application sends a byte. That is the point of the exercise
+rather than a design to copy: it demonstrates the primitives end to end. Real code
+should use the TLS session and stop there.
+
+---
+
 The Objective of the project is as follows:
 
 1. Establish SSL Socket Connection between Server and Client using SSL certificates.
