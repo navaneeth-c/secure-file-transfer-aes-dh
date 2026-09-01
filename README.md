@@ -13,9 +13,9 @@ Full write-up: [CNS_Project_Report.pdf](CNS_Project_Report.pdf).
 ## Note on the keystores
 
 The original `keystoreFile.jks` files — self-signed certificates generated for this
-assignment — **have been removed from this repository.** Committing key material,
-even throwaway class certificates, is not a habit worth preserving in public. They
-remain in the git history of the pre-archive commits.
+assignment — **have been removed from the working tree** (they remain in the
+history of the pre-archive commits). Committing key material,
+even throwaway class certificates, is not a habit worth preserving in public.
 
 To run this, generate your own:
 
@@ -34,6 +34,12 @@ is *already* TLS-protected is redundant — SSL has done the key agreement and
 encryption before the application sends a byte. That is the point of the exercise
 rather than a design to copy: it demonstrates the primitives end to end. Real code
 should use the TLS session and stop there.
+
+Two more things a security reviewer will find, named here so the hindsight note is
+honest rather than selective: the AES cipher is instantiated as `AES/ECB/PKCS5Padding` —
+ECB, the textbook wrong mode, with no IV, so identical plaintext blocks produce identical
+ciphertext — and the keystore password is hardcoded in the source. Left as written, like
+the rest.
 
 ---
 
